@@ -2,6 +2,7 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class CategoryController {
+public class CategoryController{
     //so here we injected service dependency in controller,
     // if we want to get rid of constructor we can add filedInjection @Autowired
     //it is good practice to have all business logic in service layer
@@ -30,7 +31,7 @@ public class CategoryController {
     }
 
     @PostMapping("/public/category")
-    public ResponseEntity<String> createCategory(@RequestBody Category category){
+    public ResponseEntity<String> createCategory(@Valid @RequestBody Category category){
         categoryService.createCategory(category);
         return new ResponseEntity<>("Category Added Successfully",HttpStatus.CREATED);
     }
@@ -52,7 +53,7 @@ public class CategoryController {
                                                  @PathVariable Long categoryId){
         try{
             Category savedCategory=categoryService.updateCategory(category,categoryId);
-            return new ResponseEntity<>("Category with categoryId "+categoryId,HttpStatus.OK);
+            return new ResponseEntity<>("Category with categoryId  "+categoryId +"updated",HttpStatus.OK);
 
         }catch(ResponseStatusException e){
             return new ResponseEntity<>(e.getReason(),e.getStatusCode());
